@@ -1,0 +1,370 @@
+$iconSize: 64px;
+$buttonColor: #252526;
+$borderColor: #333333;
+$menuColor: #333333;
+$textColor: #FFFFFF;
+
+.container {
+  color: $textColor;
+  background: #1E1E1E;
+  min-height: 100vh;
+  max-width: 420px;
+  user-select: none;
+}
+
+// ヘッダ
+.header-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  @extend .p-2;
+  @extend .mb-2;
+
+  .icon {
+    @extend .p-4;
+  }
+  .icon.power {
+    color: #ed1c24;
+  }
+}
+
+// 色ボタン
+.color-button-section {
+  display: grid;
+  flex-direction: row;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  .button {
+    @extend .mx-2;
+    @extend .p-2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+
+  .button.blue {
+    color: #fff;
+    background-color: #00387b;
+  }
+
+  .button.red {
+    color: #fff;
+    background-color: #C1121C;
+  }
+
+  .button.green {
+    color: #fff;
+    background-color: #007243;
+  }
+
+  .button.yellow {
+    color: #000;
+    background-color: #F7BA0B;
+  }
+}
+
+// チャンネル
+.channel-section {
+  @extend .mt-3;
+  height: 270px;
+
+  .buttons {
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-around;
+
+    .channel-button {
+      @extend .m-2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: $buttonColor;
+      border-radius: 30px;
+
+      .text {
+        font-size: 18px;
+        padding: 10px 0;
+      }
+    }
+  }
+
+  .updown {
+    height: 100%;
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    .button {
+      @extend .py-3;
+      display: flex;
+      flex-direction: column;
+      width: 260px;
+      background: $buttonColor;
+      border-radius: 40px;
+      justify-content: center;
+      align-items: center;
+
+      .icon {
+        @extend .my-3;
+        @extend .w-100;
+        text-align: center;
+      }
+
+      .label {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+// カーソル等
+.control-section {
+  display: flex;
+  flex-direction: column;
+
+  .top-section {
+    @extend .px-3;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .icon {
+      background: $buttonColor;
+      border-radius: 50%;
+      width: $iconSize;
+      height: $iconSize;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .cursor-section {
+    @extend .mt-5;
+    @extend .pt-4;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 80;
+
+    %circle {
+      position: absolute;
+      border: 1px solid $borderColor;
+      border-radius: 50%;
+    }
+
+    .ok-inner {
+      @extend %circle;
+      z-index: 90;
+      padding: 30px;
+    }
+
+    .ok-outer {
+      @extend %circle;
+      padding: 100px;
+    }
+
+    %cursor {
+      @extend .p-4;
+      position: absolute;
+    }
+
+    .right {
+      @extend %cursor;
+      transform: translate(70px);
+    }
+
+    .down {
+      @extend %cursor;
+      transform: rotate(90deg) translate(70px);
+    }
+
+    .left {
+      @extend %cursor;
+      transform: rotate(180deg) translate(70px);
+    }
+
+    .up {
+      @extend %cursor;
+      transform: rotate(270deg) translate(70px);
+    }
+  }
+
+  .bottom-section {
+    @extend .top-section;
+    @extend .mt-5;
+    @extend .pt-4;
+  }
+
+  // 音量
+  .volume-enter-active,
+  .volume-leave-active {
+    opacity: 1;
+    transition: .5s;
+  }
+  .volume-enter,
+  .volume-leave-to {
+    opacity: 0;
+    transition: .5s;
+  }
+
+  .change-volume-section {
+    position: absolute;
+    @extend .px-3;
+    width: 100%;
+    z-index: 120;
+
+    .change-volume-panel {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      background: $buttonColor;
+      border-radius: 50px;
+      grid-template-columns: $iconSize calc(100% - #{$iconSize} * 2) $iconSize;
+
+      .volume {
+        color: red;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text {
+        font-size: 20px;
+      }
+
+      .side {
+        width: $iconSize;
+        height: $iconSize;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+// 下部
+.footer-section {
+  @extend .mt-3;
+  flex-direction: row;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid $borderColor;
+  border-left: 1px solid $borderColor;
+
+  .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 8px;
+    border-top: 1px solid $borderColor;
+    border-right: 1px solid $borderColor;
+
+    .icon {
+      @extend .m-2;
+    }
+
+    .text {
+      font-size: 11px;
+      color: #ffffff;
+    }
+  }
+}
+
+.menu-enter-active,
+.menu-leave-active {
+  transform: translate(0px, 0px);
+  transition: transform 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+.menu-enter,
+.menu-leave-to {
+  transform: translateX(-100vw) translateX(0px);
+}
+
+.menu-section-overlay {
+  position: absolute;
+  z-index: 120;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.menu-section-wrapper {
+  position: absolute;
+  z-index: 130;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  color: $textColor;
+  background-color: $menuColor;
+
+  .menu-section {
+    @extend .p-2;
+    margin: 0 0.75rem;
+
+    .icon {
+      @extend .p-4;
+    }
+
+    .list-group-item {
+      color: $textColor;
+      background-color: $menuColor;
+    }
+
+    .list-group-item.title {
+      @extend .px-0;
+      @extend .mt-2;
+      @extend .h3;
+    }
+  }
+}
+
+// 音量調整
+.input-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  height: 5px;
+  width: 100%;
+  border-radius: 6px;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid rgba(0, 0, 0, .7);
+    width: 22px;
+    height: 22px;
+    display: block;
+    background-color: #fff;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+  }
+
+  &:active::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, .6);
+    transition: .4s;
+  }
+}
