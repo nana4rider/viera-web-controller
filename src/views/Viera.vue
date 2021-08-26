@@ -6,7 +6,11 @@
       </font-awesome-layers>
       <span>{{ name }}</span>
 
-      <font-awesome-layers class="icon power" @click="sendKey(VieraKey.power)">
+      <font-awesome-layers
+        class="icon power"
+        v-touch:tap="tapPower"
+        v-touch:longtap="longtapPower"
+      >
         <font-awesome-icon icon="power-off" size="lg" />
       </font-awesome-layers>
     </header>
@@ -43,7 +47,7 @@
               v-for="button of MenuFunctionButtons"
               :key="button.key"
               class="list-group-item"
-              @click="clickButton(button)"
+              @click="clickButton(button); closeMenu()"
             >
               {{ button.label }}
             </li>
@@ -52,7 +56,7 @@
               v-for="button of MenuInputModeButtons"
               :key="button.key"
               class="list-group-item"
-              @click="clickButton(button)"
+              @click="clickButton(button); closeMenu()"
             >
               {{ button.label }}
             </li>
@@ -254,6 +258,12 @@ export default defineComponent({
     closeMenu() {
       this.visibleMenu = false;
     },
+    tapPower() {
+      this.togglePower(false);
+    },
+    longtapPower() {
+      this.togglePower(true);
+    },
     clickButton(button: Button) {
       if (button.type === 'std') {
         this.sendKey(button.key);
@@ -268,6 +278,9 @@ export default defineComponent({
     async getVolume(): Promise<number> {
       const response = await this.$api.get(`/${this.id}/volume`);
       return response.data.value;
+    },
+    async togglePower(withLight: boolean) {
+      await this.$api.post(`/${this.id}/power`, { withLight: withLight });
     },
     async sendKey(key: VieraKey) {
       console.log('sendKey:', key);

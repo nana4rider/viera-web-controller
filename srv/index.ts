@@ -1,3 +1,4 @@
+import axios from 'axios';
 import express, { NextFunction, Request, Response } from 'express';
 import PromiseRouter from 'express-promise-router';
 import * as fs from 'fs';
@@ -39,7 +40,7 @@ export default (app: express.Application): void => {
   vieraRouter.get('/', async (req, res) => {
     const vieras = [];
     for (const entry of vieraConfig) {
-      vieras.push({id: entry.id, name: entry.name});
+      vieras.push({ id: entry.id, name: entry.name });
     }
     res.json(vieras);
   });
@@ -55,6 +56,7 @@ export default (app: express.Application): void => {
     await viera.connect();
 
     res.locals.id = Number(req.params.id);
+    res.locals.config = vieraConfig.find(entry => entry.id === res.locals.id);
     res.locals.viera = viera;
     next();
   });
@@ -93,6 +95,17 @@ export default (app: express.Application): void => {
     res.send();
   });
 
+  vieraIdRouter.route('/power').post(async (req, res) => {
+    const viera: VieraClient = res.locals.viera;
+
+    if (req.body.withLight) {
+      await toggleLight(res.locals.viera, res.locals.config);
+    }
+
+    await viera.sendKey(VieraKey.power);
+    res.send();
+  });
+
   vieraIdRouter.route('/app').get(async (req, res) => {
     const viera: VieraClient = res.locals.viera;
     const apps = await viera.getApps();
@@ -107,12 +120,9 @@ export default (app: express.Application): void => {
   });
 
   vieraIdRouter.get('/name', async (req, res) => {
-    const config = vieraConfig.find(entry => entry.id === res.locals.id);
-    if (!config) {
-      throw createHttpError(404, 'Client not found.');
-    }
+    const config: Record<string, string> = res.locals.config;
 
-    res.type('json').send({value: config.name});
+    res.type('json').send({ value: config.name });
   });
 
   vieraIdRouter.get('/deviceInfo', async (req, res) => {
@@ -147,3 +157,18 @@ export default (app: express.Application): void => {
     }
   });
 };
+
+async function toggleLight(viera: VieraClient, config: Record<string, string>): Promise<void> {
+  if (!config.switchBotToken || !config.switchBotDeviceId) return;
+
+  // 他にいい判断方法ある…？
+  const isPowerOn = (await viera.getApps()).length !== 0;
+
+  void axios.post(`https://api.switch-bot.com/v1.0/devices/${config.switchBotDeviceId}/commands`, {
+    command: !isPowerOn ? 'turnOn' : 'turnOff'
+  }, {
+    headers: {
+      Authorization: config.switchBotToken
+    }
+  });
+}
