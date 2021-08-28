@@ -7,7 +7,7 @@
       "label": "serve",
       "type": "shell",
       "isBackground": true,
-      "command": "yarn serve",
+      "command": "npm serve",
       "problemMatcher": {
         "pattern": [
           {
