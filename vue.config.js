@@ -3,9 +3,6 @@ const { SourceMapConsumer, SourceMapGenerator } = require('source-map');
 const sourceMaps = {};
 
 module.exports = {
-  pwa: {
-    appleMobileWebAppCapable: 'yes'
-  },
   pluginOptions: {
     express: {
       shouldServeApp: true,

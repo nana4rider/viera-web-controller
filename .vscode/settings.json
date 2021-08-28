@@ -4,13 +4,13 @@
     "node_modules/**/*": true,
   },
   "files.autoGuessEncoding": true,
-  "js/ts.implicitProjectConfig.experimentalDecorators": true,
   "typescript.validate.enable": true,
   "eslint.debug": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
   },
+  "npm.validate.enable": false,
   "eslint.validate": [
     "typescript"
   ],
