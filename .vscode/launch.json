@@ -23,6 +23,7 @@
       "name": "Debug Server",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
+        "run",
         "express"
       ],
       "skipFiles": [
