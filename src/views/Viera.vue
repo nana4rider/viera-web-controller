@@ -253,7 +253,9 @@ export default defineComponent({
       this.visibleChangeVolume = !this.visibleChangeVolume;
     },
     openMenu() {
-      this.visibleMenu = true;
+      if (!this.visibleChangeVolume) {
+        this.visibleMenu = true;
+      }
     },
     closeMenu() {
       this.visibleMenu = false;
