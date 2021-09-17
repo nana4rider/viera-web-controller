@@ -38,7 +38,7 @@
         v-touch:swipe.left="closeMenu"
       >
         <nav class="menu-section">
-          <font-awesome-layers class="icon" @click="closeMenu">
+          <font-awesome-layers class="icon close" @click="closeMenu">
             <font-awesome-icon icon="times" size="lg" />
           </font-awesome-layers>
           <ul class="list-group list-group-flush">
@@ -47,18 +47,30 @@
               v-for="button of MenuFunctionButtons"
               :key="button.key"
               class="list-group-item"
-              @click="clickButton(button); closeMenu()"
+              @click="
+                clickButton(button);
+                closeMenu();
+              "
             >
-              {{ button.label }}
+              <font-awesome-layers class="icon">
+                <font-awesome-icon :icon="button.icon" size="lg" />
+              </font-awesome-layers>
+              <span class="label">{{ button.label }}</span>
             </li>
             <li class="list-group-item title">入力切替</li>
             <li
               v-for="button of MenuInputModeButtons"
               :key="button.key"
               class="list-group-item"
-              @click="clickButton(button); closeMenu()"
+              @click="
+                clickButton(button);
+                closeMenu();
+              "
             >
-              {{ button.label }}
+              <font-awesome-layers class="icon">
+                <font-awesome-icon :icon="button.icon" size="lg" />
+              </font-awesome-layers>
+              <span class="label">{{ button.label }}</span>
             </li>
           </ul>
         </nav>
@@ -203,7 +215,7 @@ import { defineComponent } from '@vue/runtime-core';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import {
   Button, MenuFunctionButtons, MenuInputModeButtons,
-  NumberButtons, NamedButtons, FooterButtons
+  NumberButtons, NamedButtons, FooterButtons, KeyButton
 } from '../buttons';
 import 'swiper/swiper.scss';
 
@@ -267,11 +279,14 @@ export default defineComponent({
       this.togglePower(true);
     },
     clickButton(button: Button) {
-      if (button.type === 'std') {
+      if (this.isKeyButton(button)) {
         this.sendKey(button.key);
-      } else if (button.type === 'app') {
+      } else {
         this.launchApp(button.productId);
       }
+    },
+    isKeyButton(button: Button): button is KeyButton {
+      return button.hasOwnProperty('key');
     },
     async getVieraName(): Promise<string> {
       const response = await this.$api.get(`/${this.id}/name`);
