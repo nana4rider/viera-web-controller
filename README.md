@@ -1,5 +1,8 @@
 # viera-controller
-Vieraのスマートなリモコン
+VIERAのWebリモコン
+
+![](images/controller.png)
+![](images/controller_menu.png)
 
 ## Project setup
 ```
