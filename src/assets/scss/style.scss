@@ -1,12 +1,13 @@
 $iconSize: 64px;
-$buttonColor: #252526;
-$borderColor: #444444;
-$menuColor: #333333;
-$textColor: #FFFFFF;
+$buttonColor: #2d2f33;
+$borderColor: #383C3A;
+$menuColor: #2d2f33;
+$textColor: #ffffff;
 
 .container {
+  position: relative;
   color: $textColor;
-  background: #1E1E1E;
+  background: #1f1f1f;
   min-height: 100vh;
   max-width: 420px;
   user-select: none;
@@ -211,12 +212,12 @@ $textColor: #FFFFFF;
   .volume-enter-active,
   .volume-leave-active {
     opacity: 1;
-    transition: .5s;
+    transition: 0.5s;
   }
   .volume-enter,
   .volume-leave-to {
     opacity: 0;
-    transition: .5s;
+    transition: 0.5s;
   }
 
   .change-volume-section {
@@ -319,10 +320,19 @@ $textColor: #FFFFFF;
     margin: 0 0.75rem;
 
     .icon {
+      @extend .px-3;
+    }
+
+    .icon.close {
       @extend .p-4;
     }
 
+    .label {
+      @extend .mx-2;
+    }
+
     .list-group-item {
+      @extend .py-3;
       color: $textColor;
       background-color: $menuColor;
     }
@@ -354,7 +364,7 @@ $textColor: #FFFFFF;
     appearance: none;
     cursor: pointer;
     position: relative;
-    border: 2px solid rgba(0, 0, 0, .7);
+    border: 2px solid rgba(0, 0, 0, 0.7);
     width: 22px;
     height: 22px;
     display: block;
@@ -364,7 +374,7 @@ $textColor: #FFFFFF;
   }
 
   &:active::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, .6);
-    transition: .4s;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6);
+    transition: 0.4s;
   }
 }
