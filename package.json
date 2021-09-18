@@ -1,13 +1,13 @@
 {
   "name": "viera-web-controller",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "express": "vue-cli-service express:watch",
     "build": "vue-cli-service build",
     "express:run": "vue-cli-service express:run",
-    "auth": "ts-node --project=tsconfig.cli.json srv/auth.ts",
+    "auth": "viera-auth-cli",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -58,12 +58,12 @@
     "vue-cli-plugin-express": "^1.0.2"
   },
   "engines": {
-      "node": "16.5.0",
-      "npm": "7.19.1"
+    "node": "16.5.0",
+    "npm": "7.19.1"
   },
   "author": "nana4rider",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/nana4rider/viera-web-controller.git"
+    "type": "git",
+    "url": "https://github.com/nana4rider/viera-web-controller.git"
   }
 }

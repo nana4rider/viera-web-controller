@@ -161,8 +161,7 @@ export default (app: express.Application): void => {
 async function toggleLight(viera: VieraClient, config: Record<string, string>): Promise<void> {
   if (!config.switchBotToken || !config.switchBotDeviceId) return;
 
-  // 他にいい判断方法ある…？
-  const isPowerOn = (await viera.getApps()).length !== 0;
+  const isPowerOn = await viera.isPowerOn();
 
   void axios.post(`https://api.switch-bot.com/v1.0/devices/${config.switchBotDeviceId}/commands`, {
     command: !isPowerOn ? 'turnOn' : 'turnOff'
