@@ -104,6 +104,19 @@
         </div>
       </swiper-slide>
 
+      <swiper-slide v-for="(buttons, index) in AppButtons" :key="index">
+        <div class="app-buttons">
+          <div
+            v-for="app of buttons"
+            :key="app.productId"
+            @click="clickButton(app)"
+            class="app-button"
+          >
+            <img class="icon" :src="app.icon" :alt="app.label" />
+          </div>
+        </div>
+      </swiper-slide>
+
       <swiper-slide>
         <div class="updown">
           <div class="button">
@@ -210,12 +223,12 @@ import { library as fontawesomeLibrary } from '@fortawesome/fontawesome-svg-core
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { VieraKey } from 'panasonic-viera-ts';
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 import { defineComponent } from '@vue/runtime-core';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import {
   Button, MenuFunctionButtons, MenuInputModeButtons,
-  NumberButtons, NamedButtons, FooterButtons, KeyButton
+  NumberButtons, NamedButtons, FooterButtons, KeyButton, AppButton
 } from '../buttons';
 import 'swiper/swiper.scss';
 
@@ -240,6 +253,7 @@ export default defineComponent({
       visibleChangeVolume: false,
       visibleMenu: false,
       volume: 0,
+      AppButtons: [] as AppButton[][]
     };
   },
   setup() {
@@ -252,13 +266,12 @@ export default defineComponent({
       FooterButtons: FooterButtons
     };
   },
-  created() {
-    this.getVieraName().then(name => {
-      this.name = name;
-    });
-    this.getVolume().then(volume => {
-      this.volume = volume;
-    });
+  async created() {
+    this.name = await this.getVieraName();
+    this.volume = await this.getVolume();
+    if (await this.isPowerOn()) {
+      await this.setAppButtons();
+    }
   },
   methods: {
     toggleChangeVolume() {
@@ -288,6 +301,32 @@ export default defineComponent({
     isKeyButton(button: Button): button is KeyButton {
       return button.hasOwnProperty('key');
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    chunkArray<T extends any[]>(arr: T, size: number): T[] {
+      return arr.reduce(
+        (newarr, _, i) => {
+          if (!(i % size)) {
+            newarr.push(arr.slice(i, i + size));
+          }
+          return newarr;
+        },
+        [] as T[][]
+      );
+    },
+    async setAppButtons() {
+      const response: AxiosResponse<{
+        productId: string,
+        name: string,
+        iconUrl: string
+      }[]> = await this.$api.get(`/${this.id}/app`);
+
+      const buttons: AppButton[] = response.data.map(app => ({
+        label: app.name,
+        productId: app.productId,
+        icon: app.iconUrl
+      }));
+      this.AppButtons = this.chunkArray(buttons, 5 * 4);
+    },
     async getVieraName(): Promise<string> {
       const response = await this.$api.get(`/${this.id}/name`);
       return response.data.value;
@@ -296,8 +335,15 @@ export default defineComponent({
       const response = await this.$api.get(`/${this.id}/volume`);
       return response.data.value;
     },
+    async isPowerOn(): Promise<boolean> {
+      const response = await this.$api.get(`/${this.id}/power`);
+      return response.data.value;
+    },
     async togglePower(withLight: boolean) {
       await this.$api.post(`/${this.id}/power`, { withLight: withLight });
+      if (!this.AppButtons.length) {
+        await this.setAppButtons();
+      }
     },
     async sendKey(key: VieraKey) {
       console.log('sendKey:', key);

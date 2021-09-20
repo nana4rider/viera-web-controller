@@ -14,7 +14,7 @@ const MenuInputModeButtons: Button[] = [
   { label: 'パソコン(HDMI2)', key: VieraKey.hdmi2, icon: 'keyboard' },
 ];
 
-const NumberButtons: Button[] = [
+const NumberButtons: KeyButton[] = [
   { label: '1', key: VieraKey.num_1 },
   { label: '2', key: VieraKey.num_2 },
   { label: '3', key: VieraKey.num_3 },
@@ -29,7 +29,7 @@ const NumberButtons: Button[] = [
   { label: '12', key: VieraKey.num_12 },
 ];
 
-const NamedButtons: Button[] = [
+const NamedButtons: KeyButton[] = [
   { label: 'NHK 総合', key: VieraKey.num_1 },
   { label: 'NHK Eテレ', key: VieraKey.num_2 },
   { label: '群馬テレビ', key: VieraKey.num_3 },
@@ -38,10 +38,6 @@ const NamedButtons: Button[] = [
   { label: 'TBS', key: VieraKey.num_6 },
   { label: 'テレビ東京', key: VieraKey.num_7 },
   { label: 'フジテレビ', key: VieraKey.num_8 },
-  { label: 'Amazon', productId: '0010000100190002' },
-  { label: 'YouTube', productId: '0070000200190001' },
-  { label: 'TVer', productId: '0040002500000001' },
-  { label: 'Hulu', productId: '0010000F00000002' },
 ];
 
 const FooterButtons: Button[] = [
@@ -73,5 +69,7 @@ type Button = KeyButton | AppButton;
 
 export {
   KeyButton, AppButton, Button,
-  MenuFunctionButtons, MenuInputModeButtons, NumberButtons, NamedButtons, FooterButtons
+  MenuFunctionButtons, MenuInputModeButtons, FooterButtons,
+  NumberButtons, NamedButtons
 };
+

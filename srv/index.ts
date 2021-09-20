@@ -104,6 +104,11 @@ export default (app: express.Application): void => {
 
     await viera.sendKey(VieraKey.power);
     res.send();
+  }).get(async (req, res) => {
+    const viera: VieraClient = res.locals.viera;
+    const powerOn = await viera.isPowerOn();
+
+    res.json({ value: powerOn });
   });
 
   vieraIdRouter.route('/app').get(async (req, res) => {

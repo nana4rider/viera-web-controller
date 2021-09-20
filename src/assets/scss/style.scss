@@ -1,6 +1,6 @@
 $iconSize: 64px;
 $buttonColor: #2d2f33;
-$borderColor: #383C3A;
+$borderColor: #383c3a;
 $menuColor: #2d2f33;
 $textColor: #ffffff;
 
@@ -54,7 +54,7 @@ $textColor: #ffffff;
 
   .button.red {
     color: #fff;
-    background-color: #C1121C;
+    background-color: #c1121c;
   }
 
   .button.green {
@@ -64,7 +64,7 @@ $textColor: #ffffff;
 
   .button.yellow {
     color: #000;
-    background-color: #F7BA0B;
+    background-color: #f7ba0b;
   }
 }
 
@@ -92,6 +92,27 @@ $textColor: #ffffff;
       .text {
         font-size: 18px;
         padding: 10px 0;
+      }
+    }
+  }
+
+  .app-buttons {
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    justify-content: space-around;
+
+    .app-button {
+      @extend .m-2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .icon {
+        width: 48px;
+        height: 48px;
       }
     }
   }
