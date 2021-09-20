@@ -7,7 +7,7 @@
       "label": "serve",
       "type": "shell",
       "isBackground": true,
-      "command": "npm serve",
+      "command": "npm run serve",
       "problemMatcher": {
         "pattern": [
           {
