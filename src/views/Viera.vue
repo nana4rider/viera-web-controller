@@ -314,18 +314,8 @@ export default defineComponent({
       );
     },
     async setAppButtons() {
-      const response: AxiosResponse<{
-        productId: string,
-        name: string,
-        iconUrl: string
-      }[]> = await this.$api.get(`/${this.id}/app`);
-
-      const buttons: AppButton[] = response.data.map(app => ({
-        label: app.name,
-        productId: app.productId,
-        icon: app.iconUrl
-      }));
-      this.AppButtons = this.chunkArray(buttons, 5 * 4);
+      const response: AxiosResponse<AppButton[]> = await this.$api.get(`/${this.id}/app`);
+      this.AppButtons = this.chunkArray(response.data, 5 * 4);
     },
     async getVieraName(): Promise<string> {
       const response = await this.$api.get(`/${this.id}/name`);

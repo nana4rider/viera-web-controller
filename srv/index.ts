@@ -1,3 +1,4 @@
+import { AppButton } from '@/buttons';
 import axios from 'axios';
 import express, { NextFunction, Request, Response } from 'express';
 import PromiseRouter from 'express-promise-router';
@@ -115,7 +116,13 @@ export default (app: express.Application): void => {
     const viera: VieraClient = res.locals.viera;
     const apps = await viera.getApps();
 
-    res.json(apps);
+    const buttons: AppButton[] = apps.map(app => ({
+      label: app.name,
+      productId: app.productId,
+      icon: app.iconUrl
+    }));
+
+    res.json(buttons);
   }).post(async (req, res) => {
     const viera: VieraClient = res.locals.viera;
     const productId = req.body.value;
