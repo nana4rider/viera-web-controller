@@ -91,19 +91,6 @@
         </div>
       </swiper-slide>
 
-      <swiper-slide>
-        <div class="buttons">
-          <div
-            v-for="channel of NamedButtons"
-            :key="channel.key"
-            class="channel-button"
-            @click="clickButton(channel)"
-          >
-            <span class="text">{{ channel.label }}</span>
-          </div>
-        </div>
-      </swiper-slide>
-
       <swiper-slide v-for="(buttons, index) in AppButtons" :key="index">
         <div class="app-buttons">
           <div
@@ -113,6 +100,19 @@
             class="app-button"
           >
             <img class="icon" :src="app.icon" :alt="app.label" />
+          </div>
+        </div>
+      </swiper-slide>
+
+      <swiper-slide>
+        <div class="buttons">
+          <div
+            v-for="channel of NamedButtons"
+            :key="channel.key"
+            class="channel-button"
+            @click="clickButton(channel)"
+          >
+            <span class="text">{{ channel.label }}</span>
           </div>
         </div>
       </swiper-slide>
