@@ -315,7 +315,7 @@ export default defineComponent({
     },
     async setAppButtons() {
       const response: AxiosResponse<AppButton[]> = await this.$api.get(`/${this.id}/app`);
-      this.AppButtons = this.chunkArray(response.data, 5 * 4);
+      this.AppButtons = this.chunkArray(response.data, 4 * 3);
     },
     async getVieraName(): Promise<string> {
       const response = await this.$api.get(`/${this.id}/name`);

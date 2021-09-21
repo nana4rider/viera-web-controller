@@ -97,10 +97,11 @@ $textColor: #ffffff;
   }
 
   .app-buttons {
+    @extend .pt-1;
     display: grid;
     flex-direction: row;
     align-items: center;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-content: space-around;
 
     .app-button {
@@ -111,8 +112,8 @@ $textColor: #ffffff;
       align-items: center;
 
       .icon {
-        width: 48px;
-        height: 48px;
+        width: 64px;
+        height: 64px;
       }
     }
   }
