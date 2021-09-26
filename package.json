@@ -1,6 +1,6 @@
 {
   "name": "viera-web-controller",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -11,6 +11,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/config": "^0.0.39",
+    "config": "^3.3.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",

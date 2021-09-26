@@ -1,21 +1,24 @@
 import { AppButton } from '@/buttons';
 import axios from 'axios';
+import config from 'config';
 import express, { NextFunction, Request, Response } from 'express';
 import PromiseRouter from 'express-promise-router';
-import * as fs from 'fs';
 import createHttpError, { HttpError } from 'http-errors';
-import * as yaml from 'js-yaml';
 import * as log4js from 'log4js';
 import { VieraClient, VieraKey } from 'panasonic-viera-ts';
-import { env } from 'process';
 import * as log4jconfig from './config/log4js';
 
-if (!env.NODE_ENV) {
-  throw new Error('NODE_ENV is null');
-}
+type VieraId = string;
+type VieraConfig = {
+  name: string,
+  host: string,
+  appId: string,
+  encKey: string,
+  sensorNo?: string,
+};
 
 // log4js
-log4js.configure(log4jconfig.configures[env.NODE_ENV]);
+log4js.configure(log4jconfig.configures[config.get('env') as string]);
 const logger = log4js.getLogger();
 const accessLogger = log4js.getLogger('access');
 
@@ -23,10 +26,11 @@ export default (app: express.Application): void => {
   app.use(express.json());
   app.use(log4js.connectLogger(accessLogger, { level: 'INFO' }));
 
-  const vieraConfig = yaml.load(fs.readFileSync('viera.yml', 'utf8')) as Array<Record<string, string>>;
-  const vieraClients: Record<string, VieraClient> = {};
-  for (const entry of vieraConfig) {
-    vieraClients[entry.id] = new VieraClient(entry.host, {
+  const vieraEntries: Record<VieraId, VieraConfig> = config.get('viera');
+
+  const vieraClients: Record<VieraId, VieraClient> = {};
+  for (const [id, entry] of Object.entries(vieraEntries)) {
+    vieraClients[id] = new VieraClient(entry.host, {
       appId: entry.appId,
       encKey: entry.encKey
     });
@@ -40,8 +44,8 @@ export default (app: express.Application): void => {
 
   vieraRouter.get('/', async (req, res) => {
     const vieras = [];
-    for (const entry of vieraConfig) {
-      vieras.push({ id: entry.id, name: entry.name });
+    for (const [id, entry] of Object.entries(vieraEntries)) {
+      vieras.push({ id, name: entry.name });
     }
     res.json(vieras);
   });
@@ -57,7 +61,7 @@ export default (app: express.Application): void => {
     await viera.connect();
 
     res.locals.id = Number(req.params.id);
-    res.locals.config = vieraConfig.find(entry => entry.id === res.locals.id);
+    res.locals.config = vieraEntries[res.locals.id];
     res.locals.viera = viera;
     next();
   });
@@ -98,9 +102,10 @@ export default (app: express.Application): void => {
 
   vieraIdRouter.route('/power').post(async (req, res) => {
     const viera: VieraClient = res.locals.viera;
+    const vieraConfig: VieraConfig = res.locals.config;
 
-    if (req.body.withLight) {
-      await toggleLight(res.locals.viera, res.locals.config);
+    if (req.body.withSensor) {
+      await toggleSensor(viera, vieraConfig);
     }
 
     await viera.sendKey(VieraKey.power);
@@ -170,16 +175,12 @@ export default (app: express.Application): void => {
   });
 };
 
-async function toggleLight(viera: VieraClient, config: Record<string, string>): Promise<void> {
-  if (!config.switchBotToken || !config.switchBotDeviceId) return;
+async function toggleSensor(viera: VieraClient, vieraConfig: VieraConfig): Promise<void> {
+  if (!vieraConfig.sensorNo) return;
 
   const isPowerOn = await viera.isPowerOn();
+  const sensorUrl: string = config.get('httpSensor.url');
+  const command = !isPowerOn ? 'open' : 'close';
 
-  void axios.post(`https://api.switch-bot.com/v1.0/devices/${config.switchBotDeviceId}/commands`, {
-    command: !isPowerOn ? 'turnOn' : 'turnOff'
-  }, {
-    headers: {
-      Authorization: config.switchBotToken
-    }
-  });
+  void axios.get(`${sensorUrl}/${vieraConfig.sensorNo}/${command}`);
 }

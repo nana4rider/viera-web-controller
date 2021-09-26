@@ -329,8 +329,8 @@ export default defineComponent({
       const response = await this.$api.get(`/${this.id}/power`);
       return response.data.value;
     },
-    async togglePower(withLight: boolean) {
-      await this.$api.post(`/${this.id}/power`, { withLight: withLight });
+    async togglePower(withSensor: boolean) {
+      await this.$api.post(`/${this.id}/power`, { withSensor: withSensor });
       if (!this.AppButtons.length) {
         await this.setAppButtons();
       }

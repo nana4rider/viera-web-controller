@@ -23,5 +23,5 @@ pnpm-debug.log*
 *.sw?
 
 .data/*
-viera.yml
 pm2.config.js
+.env
