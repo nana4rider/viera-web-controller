@@ -19,13 +19,8 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
 # ペアリングの方法
 ```
 npm run auth
 ```
-`viera.yml.sample`を`viera.yml`にコピーし、出力された内容を設定してください。
+`.env.sample`を`.env`にコピーし、出力された内容を設定してください。
