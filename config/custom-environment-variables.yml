@@ -1,10 +1,2 @@
 # env
 env: NODE_ENV
-httpSensor:
-  url: HTTP_SENSOR_URL
-viera:
-  "1":
-    host: VIERA_LIVING_ROOM_HOST
-    appId: VIERA_LIVING_ROOM_APPID
-    encKey: VIERA_LIVING_ROOM_ENCKEY
-    sensorNo: VIERA_LIVING_ROOM_SENSORNO

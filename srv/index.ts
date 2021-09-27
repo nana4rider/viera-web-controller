@@ -8,8 +8,9 @@ import * as log4js from 'log4js';
 import { VieraClient, VieraKey } from 'panasonic-viera-ts';
 import * as log4jconfig from './config/log4js';
 
-type VieraId = string;
+type VieraId = number;
 type VieraConfig = {
+  id: number
   name: string,
   host: string,
   appId: string,
@@ -26,11 +27,11 @@ export default (app: express.Application): void => {
   app.use(express.json());
   app.use(log4js.connectLogger(accessLogger, { level: 'INFO' }));
 
-  const vieraEntries: Record<VieraId, VieraConfig> = config.get('viera');
+  const vieraEntries: VieraConfig[] = config.get('viera');
 
   const vieraClients: Record<VieraId, VieraClient> = {};
-  for (const [id, entry] of Object.entries(vieraEntries)) {
-    vieraClients[id] = new VieraClient(entry.host, {
+  for (const entry of vieraEntries) {
+    vieraClients[entry.id] = new VieraClient(entry.host, {
       appId: entry.appId,
       encKey: entry.encKey
     });
@@ -44,8 +45,8 @@ export default (app: express.Application): void => {
 
   vieraRouter.get('/', async (req, res) => {
     const vieras = [];
-    for (const [id, entry] of Object.entries(vieraEntries)) {
-      vieras.push({ id, name: entry.name });
+    for (const entry of vieraEntries) {
+      vieras.push({ id: entry.id, name: entry.name });
     }
     res.json(vieras);
   });
@@ -54,14 +55,15 @@ export default (app: express.Application): void => {
   vieraRouter.use('/:id', vieraIdRouter);
 
   vieraIdRouter.use(async (req, res, next) => {
-    const viera = vieraClients[req.params.id];
+    const id  = Number(req.params.id);
+    const viera = vieraClients[id];
     if (!viera) {
       throw createHttpError(404, 'Client not found.');
     }
     await viera.connect();
 
-    res.locals.id = Number(req.params.id);
-    res.locals.config = vieraEntries[res.locals.id];
+    res.locals.id = id;
+    res.locals.config = vieraEntries.find(entry => entry.id === res.locals.id);
     res.locals.viera = viera;
     next();
   });

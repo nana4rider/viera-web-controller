@@ -23,4 +23,4 @@ npm run build
 ```
 npm run auth
 ```
-`.env.sample`を`.env`にコピーし、出力された内容を設定してください。
+`config/local.yml.sample`を`config/local.yml`にコピーし、出力された内容を設定してください。

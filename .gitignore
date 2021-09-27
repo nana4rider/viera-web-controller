@@ -24,4 +24,4 @@ pnpm-debug.log*
 
 .data/*
 pm2.config.js
-.env
+config/local.yml
