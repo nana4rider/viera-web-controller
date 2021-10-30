@@ -150,7 +150,7 @@
                   type="range"
                   class="input-range"
                   min="0"
-                  max="50"
+                  max="70"
                   step="2"
                   v-model="volume"
                   @change="setVolume"
