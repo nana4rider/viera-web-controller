@@ -268,14 +268,17 @@ export default defineComponent({
   },
   async created() {
     this.name = await this.getVieraName();
-    this.volume = await this.getVolume();
     if (await this.isPowerOn()) {
       await this.setAppButtons();
     }
   },
   methods: {
-    toggleChangeVolume() {
-      this.visibleChangeVolume = !this.visibleChangeVolume;
+    async toggleChangeVolume() {
+      let visible = !this.visibleChangeVolume;
+      if (visible) {
+        this.volume = await this.getVolume();
+      }
+      this.visibleChangeVolume = visible;
     },
     openMenu() {
       if (!this.visibleChangeVolume) {
