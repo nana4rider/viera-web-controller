@@ -267,6 +267,12 @@ export default defineComponent({
     };
   },
   async created() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.setAppButtons();
+      }
+    });
+
     this.name = await this.getVieraName();
     if (await this.isPowerOn()) {
       await this.setAppButtons();
@@ -317,6 +323,7 @@ export default defineComponent({
       );
     },
     async setAppButtons() {
+      if (this.AppButtons.length) return;
       const response: AxiosResponse<AppButton[]> = await this.$api.get(`/${this.id}/app`);
       this.AppButtons = this.chunkArray(response.data, 4 * 3);
     },
@@ -334,9 +341,7 @@ export default defineComponent({
     },
     async togglePower(withSensor: boolean) {
       await this.$api.post(`/${this.id}/power`, { withSensor: withSensor });
-      if (!this.AppButtons.length) {
-        await this.setAppButtons();
-      }
+      await this.setAppButtons();
     },
     async sendKey(key: VieraKey) {
       console.log('sendKey:', key);
