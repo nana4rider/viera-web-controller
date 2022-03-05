@@ -40,7 +40,7 @@ export default (app: express.Application): void => {
   const rootRouter = PromiseRouter();
 
   const vieraRouter = PromiseRouter({ mergeParams: true });
-  rootRouter.use('/api/viera', vieraRouter);
+  rootRouter.use('/api', vieraRouter);
   vieraRouter.use(express.json());
 
   vieraRouter.get('/', async (req, res) => {
