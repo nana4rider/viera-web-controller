@@ -3,6 +3,7 @@ const { SourceMapConsumer, SourceMapGenerator } = require('source-map');
 const sourceMaps = {};
 
 module.exports = {
+  publicPath: '/viera',
   pluginOptions: {
     express: {
       shouldServeApp: true,
