@@ -3,7 +3,7 @@ import Index from '../views/Index.vue';
 import Viera from '../views/Viera.vue';
 
 const routes = [{
-  path: '/list',
+  path: '/',
   component: Index
 }, {
   path: '/:id',
