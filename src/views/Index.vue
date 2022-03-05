@@ -2,7 +2,7 @@
   <div id="nav">
     <ul class="list-group">
       <li class="list-group-item" v-for="viera of Vieras" :key="viera.id">
-        <router-link :to="'/viera/' + viera.id">{{ viera.name }}</router-link>
+        <router-link :to="'/' + viera.id">{{ viera.name }}</router-link>
       </li>
     </ul>
   </div>
