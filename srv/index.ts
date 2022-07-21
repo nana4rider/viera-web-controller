@@ -15,7 +15,7 @@ type VieraConfig = {
   host: string,
   appId: string,
   encKey: string,
-  sensorNo?: string,
+  lightWebhookUrl?: string,
 };
 
 // log4js
@@ -106,8 +106,8 @@ export default (app: express.Application): void => {
     const viera: VieraClient = res.locals.viera;
     const vieraConfig: VieraConfig = res.locals.config;
 
-    if (req.body.withSensor) {
-      await toggleSensor(viera, vieraConfig);
+    if (req.body.withLight) {
+      await toggleLight(viera, vieraConfig);
     }
 
     await viera.sendKey(VieraKey.power);
@@ -177,12 +177,12 @@ export default (app: express.Application): void => {
   });
 };
 
-async function toggleSensor(viera: VieraClient, vieraConfig: VieraConfig): Promise<void> {
-  if (!vieraConfig.sensorNo) return;
+async function toggleLight(viera: VieraClient, vieraConfig: VieraConfig): Promise<void> {
+  if (!vieraConfig.lightWebhookUrl) return;
 
   const isPowerOn = await viera.isPowerOn();
-  const sensorUrl: string = config.get('httpSensor.url');
-  const command = !isPowerOn ? 'open' : 'close';
 
-  void axios.get(`${sensorUrl}/${vieraConfig.sensorNo}/${command}`);
+  void axios.post(vieraConfig.lightWebhookUrl, {
+    state: !isPowerOn ? 'ON' : 'OFF'
+  });
 }

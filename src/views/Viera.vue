@@ -339,8 +339,8 @@ export default defineComponent({
       const response = await this.$api.get(`/${this.id}/power`);
       return response.data.value;
     },
-    async togglePower(withSensor: boolean) {
-      await this.$api.post(`/${this.id}/power`, { withSensor: withSensor });
+    async togglePower(withLight: boolean) {
+      await this.$api.post(`/${this.id}/power`, { withLight });
       await this.setAppButtons();
     },
     async sendKey(key: VieraKey) {

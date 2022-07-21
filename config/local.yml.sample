@@ -1,9 +1,7 @@
-httpSensor:
-  url: http://192.168.1.30:3001
 viera:
   - id: 1
     name: Living Room
     host: 192.168.1.164
     appId:
     encKey:
-    # sensorNo: 7
+    # lightWebhookUrl: https://example.com/
