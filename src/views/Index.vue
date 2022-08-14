@@ -2,7 +2,7 @@
   <div id="nav">
     <ul class="list-group">
       <li class="list-group-item" v-for="viera of Vieras" :key="viera.id">
-        <router-link :to="'/' + viera.id">{{ viera.name }}</router-link>
+        <router-link :to="'/' + viera.id">{{ viera.deviceName }}</router-link>
       </li>
     </ul>
   </div>
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     async getVieraName(): Promise<Viera[]> {
-      const response = await this.$api.get('/');
+      const response = await this.$api.get('/devices');
       return response.data;
     },
   },

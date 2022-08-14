@@ -3,14 +3,14 @@ const { SourceMapConsumer, SourceMapGenerator } = require('source-map');
 const sourceMaps = {};
 
 module.exports = {
-  publicPath: '/',
+  publicPath: '/viera',
   pluginOptions: {
   },
   devServer: {
     proxy: {
-      '^/api': {
+      '^/viera/api': {
         target: 'http://localhost:3006/v2',
-        pathRewrite: { "^/api/": "/" }
+        pathRewrite: { "^/viera/api/": "/" }
       }
     }
   },
