@@ -22,6 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-.data/*
 pm2.config.js
-config/local.yml

@@ -3,11 +3,15 @@ const { SourceMapConsumer, SourceMapGenerator } = require('source-map');
 const sourceMaps = {};
 
 module.exports = {
-  publicPath: '/viera',
+  publicPath: '/',
   pluginOptions: {
-    express: {
-      shouldServeApp: true,
-      serverDir: './srv'
+  },
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:3006/v2',
+        pathRewrite: { "^/api/": "/" }
+      }
     }
   },
   configureWebpack() {

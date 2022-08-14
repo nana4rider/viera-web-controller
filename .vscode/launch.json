@@ -16,24 +16,6 @@
       "sourceMapPathOverrides": {
         "webpack:///./src/*": "${webRoot}/src/*"
       }
-    },
-    {
-      "type": "pwa-node",
-      "request": "launch",
-      "name": "Debug Server",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "express"
-      ],
-      "skipFiles": [
-        "<node_internals>/**",
-        "**/tslib.js"
-      ],
-      "smartStep": true,
-      "cwd": "${workspaceRoot}",
-      "outputCapture": "std",
-      // "preLaunchTask": "serve"
     }
   ]
 }
