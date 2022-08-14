@@ -5,9 +5,13 @@ const sourceMaps = {};
 module.exports = {
   publicPath: '/viera',
   pluginOptions: {
-    express: {
-      shouldServeApp: true,
-      serverDir: './srv'
+  },
+  devServer: {
+    proxy: {
+      '^/viera/api': {
+        target: 'http://localhost:3006/v2',
+        pathRewrite: { "^/viera/api/": "/" }
+      }
     }
   },
   configureWebpack() {

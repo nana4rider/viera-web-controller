@@ -6,28 +6,17 @@
   "files.autoGuessEncoding": true,
   "typescript.validate.enable": true,
   "eslint.debug": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
-  },
-  "npm.validate.enable": false,
+  "editor.codeActionsOnSave": [
+    "source.organizeImports",
+    "source.fixAll.eslint",
+  ],
   "eslint.validate": [
     "typescript"
   ],
   "vetur.format.defaultFormatter.ts": "vscode-typescript",
-  "logViewer.watch": [
-    {
-      "title": "system.log",
-      "pattern": ".data/log/system.log"
-    },
-    {
-      "title": "error.log",
-      "pattern": ".data/log/error.log"
-    },
-    {
-      "title": "access.log",
-      "pattern": ".data/log/access.log"
-    }
-  ],
-  "todo.embedded.exclude": ["./dist/**/*", "node_modules/**/*", ".git/**/*"]
+  "todo.embedded.exclude": [
+    "./dist/**/*",
+    "node_modules/**/*",
+    ".git/**/*"
+  ]
 }

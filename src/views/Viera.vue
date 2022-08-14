@@ -9,7 +9,6 @@
       <font-awesome-layers
         class="icon power"
         v-touch:tap="tapPower"
-        v-touch:longtap="longtapPower"
       >
         <font-awesome-icon icon="power-off" size="lg" />
       </font-awesome-layers>
@@ -295,10 +294,7 @@ export default defineComponent({
       this.visibleMenu = false;
     },
     tapPower() {
-      this.togglePower(false);
-    },
-    longtapPower() {
-      this.togglePower(true);
+      this.togglePower();
     },
     clickButton(button: Button) {
       if (this.isKeyButton(button)) {
@@ -324,36 +320,37 @@ export default defineComponent({
     },
     async setAppButtons() {
       if (this.AppButtons.length) return;
-      const response: AxiosResponse<AppButton[]> = await this.$api.get(`/${this.id}/app`);
+      const response: AxiosResponse<AppButton[]> = await this.$api.get(`/devices/${this.id}/command/apps`);
       this.AppButtons = this.chunkArray(response.data, 4 * 3);
     },
     async getVieraName(): Promise<string> {
-      const response = await this.$api.get(`/${this.id}/name`);
-      return response.data.value;
+      const response = await this.$api.get(`/devices/${this.id}`);
+      return response.data.deviceName;
     },
     async getVolume(): Promise<number> {
-      const response = await this.$api.get(`/${this.id}/volume`);
+      const response = await this.$api.get(`/devices/${this.id}/command/volume`);
       return response.data.value;
     },
     async isPowerOn(): Promise<boolean> {
-      const response = await this.$api.get(`/${this.id}/power`);
-      return response.data.value;
+      const response = await this.$api.get(`/devices/${this.id}/command/power`);
+      return response.data.state === 'ON';
     },
-    async togglePower(withLight: boolean) {
-      await this.$api.post(`/${this.id}/power`, { withLight });
+    async togglePower() {
+      await this.$api.post(`/devices/${this.id}/command/power`, { state: 'TOGGLE' });
       await this.setAppButtons();
     },
     async sendKey(key: VieraKey) {
       console.log('sendKey:', key);
-      await this.$api.post(`/${this.id}/key`, { value: key });
+      await this.$api.post(`/devices/${this.id}/command/key`, { value: key });
     },
     async launchApp(productId: string) {
       console.log('productId:', productId);
-      await this.$api.post(`/${this.id}/app`, { value: productId });
+      await this.$api.post(`/devices/${this.id}/command/app`, { value: productId });
     },
     async setVolume() {
+      this.volume = Number(this.volume);
       console.log('setVolume:', this.volume);
-      await this.$api.post(`/${this.id}/volume`, { value: this.volume });
+      await this.$api.post(`/devices/${this.id}/command/volume`, { value: this.volume });
     },
   },
 });

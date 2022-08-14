@@ -4,7 +4,7 @@ import { App } from 'vue';
 export default {
   install: (app: App): void => {
     const axiosClient = axios.create({
-      baseURL: process.env.NODE_ENV ? '/viera/api' : '/api',
+      baseURL: '/viera/api',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset="utf-8"'

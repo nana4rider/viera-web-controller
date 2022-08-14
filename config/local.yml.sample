@@ -1,7 +1,0 @@
-viera:
-  - id: 1
-    name: Living Room
-    host: 192.168.1.164
-    appId:
-    encKey:
-    # lightWebhookUrl: https://example.com/
