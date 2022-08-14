@@ -18,9 +18,3 @@ npm run serve
 ```
 npm run build
 ```
-
-# ペアリングの方法
-```
-npm run auth
-```
-`config/local.yml.sample`を`config/local.yml`にコピーし、出力された内容を設定してください。
