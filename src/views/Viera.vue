@@ -341,11 +341,11 @@ export default defineComponent({
     },
     async sendKey(key: VieraKey) {
       console.log('sendKey:', key);
-      await this.$api.post(`/devices/${this.id}/command/key`, { value: key });
+      await this.$api.post(`/devices/${this.id}/command/sendKey/${key}`);
     },
     async launchApp(productId: string) {
       console.log('productId:', productId);
-      await this.$api.post(`/devices/${this.id}/command/app`, { value: productId });
+      await this.$api.post(`/devices/${this.id}/command/launchApp/${productId}`);
     },
     async setVolume() {
       this.volume = Number(this.volume);
