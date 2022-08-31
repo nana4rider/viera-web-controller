@@ -336,7 +336,7 @@ export default defineComponent({
       return response.data.state === 'ON';
     },
     async togglePower() {
-      await this.$api.post(`/devices/${this.id}/command/power`, { state: 'TOGGLE' });
+      await this.$api.put(`/devices/${this.id}/command/power`, { state: 'TOGGLE' });
       await this.setAppButtons();
     },
     async sendKey(key: VieraKey) {
@@ -350,7 +350,7 @@ export default defineComponent({
     async setVolume() {
       this.volume = Number(this.volume);
       console.log('setVolume:', this.volume);
-      await this.$api.post(`/devices/${this.id}/command/volume`, { value: this.volume });
+      await this.$api.put(`/devices/${this.id}/command/volume`, { value: this.volume });
     },
   },
 });
