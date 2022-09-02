@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
     <ul class="list-group">
-      <li class="list-group-item" v-for="viera of Vieras" :key="viera.id">
-        <router-link :to="'/' + viera.id">{{ viera.deviceName }}</router-link>
+      <li class="list-group-item" v-for="viera of Vieras" :key="viera.deviceId">
+        <router-link :to="'/' + viera.deviceId">{{ viera.deviceName }}</router-link>
       </li>
     </ul>
   </div>
