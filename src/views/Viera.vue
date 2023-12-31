@@ -178,10 +178,11 @@
         </div>
         <div class="ok-outer"></div>
         <font-awesome-layers
-          v-for="direction of ['right', 'down', 'left', 'up']"
-          :key="direction"
-          :class="direction"
-          @click="sendKey(VieraKey[direction])"
+          v-for="button of CursorButtons"
+          :key="button.key"
+          :class="button.label"
+          v-touch:press="pressButton.bind(this, button)"
+          v-touch:release="releaseButton.bind(this, button)"
         >
           <font-awesome-icon icon="caret-right" size="lg" />
         </font-awesome-layers>
@@ -202,7 +203,8 @@
         v-for="button of FooterButtons"
         :key="button.key"
         class="button"
-        @click="clickButton(button)"
+        v-touch:press="pressButton.bind(this, button)"
+        v-touch:release="releaseButton.bind(this, button)"
       >
         <font-awesome-layers class="icon">
           <font-awesome-icon :icon="button.icon" />
@@ -227,9 +229,10 @@ import { defineComponent } from '@vue/runtime-core';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import {
   Button, MenuFunctionButtons, MenuInputModeButtons,
-  NumberButtons, NamedButtons, FooterButtons, KeyButton, AppButton
+  NumberButtons, NamedButtons, FooterButtons, KeyButton, AppButton, CursorButtons
 } from '../buttons';
 import 'swiper/swiper.scss';
+import deepEqual from 'deep-equal';
 
 fontawesomeLibrary.add(fas, fab);
 
@@ -252,7 +255,9 @@ export default defineComponent({
       visibleChangeVolume: false,
       visibleMenu: false,
       volume: 0,
-      AppButtons: [] as AppButton[][]
+      AppButtons: [] as AppButton[][],
+      pressedButton: undefined as Button | undefined,
+      pressedCounter: 0
     };
   },
   setup() {
@@ -262,7 +267,8 @@ export default defineComponent({
       MenuInputModeButtons: MenuInputModeButtons,
       NumberButtons: NumberButtons,
       NamedButtons: NamedButtons,
-      FooterButtons: FooterButtons
+      FooterButtons: FooterButtons,
+      CursorButtons: CursorButtons,
     };
   },
   async created() {
@@ -296,11 +302,35 @@ export default defineComponent({
     tapPower() {
       this.togglePower();
     },
-    clickButton(button: Button) {
+    async clickButton(button: Button) {
       if (this.isKeyButton(button)) {
-        this.sendKey(button.key);
+        await this.sendKey(button.key);
       } else {
-        this.launchApp(button.productId);
+        await this.launchApp(button.productId);
+      }
+    },
+    async pressButton(button: Button) {
+      console.log('pressButton');
+      if (this.pressedButton) return;
+
+      this.pressedButton = button;
+      const sleep = (n: number) => new Promise(resolve => setTimeout(resolve, n));
+      await sleep(1000);
+      while (this.pressedButton) {
+        this.pressedCounter++;
+        await this.clickButton(button);
+        await sleep(200);
+      }
+    },
+    async releaseButton(button: Button) {
+      console.log(this.pressedButton, button);
+      if (!deepEqual(this.pressedButton, button)) return;
+
+      this.pressedButton = undefined;
+      if (this.pressedCounter === 0) {
+        await this.clickButton(button);
+      } else {
+        this.pressedCounter = 0;
       }
     },
     isKeyButton(button: Button): button is KeyButton {

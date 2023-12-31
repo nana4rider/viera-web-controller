@@ -29,6 +29,13 @@ const NumberButtons: KeyButton[] = [
   { label: '12', key: VieraKey.num_12 },
 ];
 
+const CursorButtons: KeyButton[] = [
+  { label: 'right', key: VieraKey.right },
+  { label: 'down', key: VieraKey.down },
+  { label: 'left', key: VieraKey.left },
+  { label: 'up', key: VieraKey.up },
+];
+
 const NamedButtons: KeyButton[] = [
   { label: 'NHK 総合', key: VieraKey.num_1 },
   { label: 'NHK Eテレ', key: VieraKey.num_2 },
@@ -70,6 +77,6 @@ type Button = KeyButton | AppButton;
 export {
   KeyButton, AppButton, Button,
   MenuFunctionButtons, MenuInputModeButtons, FooterButtons,
-  NumberButtons, NamedButtons
+  NumberButtons, NamedButtons, CursorButtons
 };
 
