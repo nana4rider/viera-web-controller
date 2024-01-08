@@ -275,6 +275,8 @@ export default defineComponent({
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         this.setAppButtons();
+      } else {
+        this.pressedButton = undefined;
       }
     });
 
@@ -321,6 +323,7 @@ export default defineComponent({
         await this.clickButton(button);
         await sleep(200);
       }
+      this.pressedCounter = 0;
     },
     async releaseButton(button: Button) {
       console.log(this.pressedButton, button);
@@ -329,8 +332,6 @@ export default defineComponent({
       this.pressedButton = undefined;
       if (this.pressedCounter === 0) {
         await this.clickButton(button);
-      } else {
-        this.pressedCounter = 0;
       }
     },
     isKeyButton(button: Button): button is KeyButton {
